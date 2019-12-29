@@ -9,7 +9,7 @@ namespace ManagementSystemForMechanics.Models
     internal class Customer : Person
     {
 
-        public List<Vehicle> Vehicels { get; set; }
+        public virtual List<Vehicle> Vehicels { get; set; }
 
     }
 }

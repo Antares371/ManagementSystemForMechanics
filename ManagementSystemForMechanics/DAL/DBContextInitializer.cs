@@ -34,10 +34,28 @@ namespace ManagementSystemForMechanics.DAL
 
             InitCarsMarks(context);
             InitFuelsTypes(context);
+            InitVehicles(context);
             context.SaveChanges();
 
             base.Seed(context);
         }
+
+        private void InitVehicles(DBContext context)
+        {
+            Random r = new Random();
+            
+            for (int i = 0; i < 5000; i++)
+            {
+                Vehicle v1 = new Vehicle()
+                {
+                    Year = r.Next(1999,2020),
+                    VIN = $"JKLSAOIN{i * 5}{i * 2}AS{i + 2}UH{i}",
+                    RegistrationNumber = $"CBY {i.ToString().PadLeft(5,'0')}"
+                };
+                context.Vehicles.Add(v1);
+            }
+        }
+
         private void InitCarsMarks(DBContext context)
         {
             List<VehicleMark> defaultVehiclesMarks = new List<VehicleMark>();

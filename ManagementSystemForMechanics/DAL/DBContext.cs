@@ -18,6 +18,7 @@ namespace ManagementSystemForMechanics.DAL
 
         public DbSet<VehicleMark> VehiclesMarks { get; set; }
         public DbSet<MotorType> FuelTypes { get; set; }
+        public DbSet<Vehicle> Vehicles { get; set; }
 
         public event EventHandler SaveChangesEventHandler;
         public event EventHandler SaveChangesAsyncEventHandler;
@@ -26,7 +27,13 @@ namespace ManagementSystemForMechanics.DAL
         {
             SaveChangesEventHandler += DBContext_SaveChangesEventHandler;
             SaveChangesAsyncEventHandler += DBContext_SaveChangesAsyncEventHandler;
+            Configure();
             Initialize();
+        }
+
+        private void Configure()
+        {
+            Configuration.LazyLoadingEnabled = false;
         }
 
         private void Initialize()

@@ -2,6 +2,7 @@
 using ManagementSystemForMechanics.Models;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -39,6 +40,7 @@ namespace ManagementSystemForMechanics
         {
             InitializeComponent();
             Closing += MainWindow_Closing;
+
         }
 
         private void MainWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
@@ -58,13 +60,26 @@ namespace ManagementSystemForMechanics
 
 
 
-        private void Search(object sender, RoutedEventArgs e)
+        private async void Search(object sender, RoutedEventArgs e)
         {
-            CustomerWindow customerWindow = new CustomerWindow();
-            customerWindow.ShowDialog();
+            string phase = SearchedPhase.Text.Trim();
+          var vehicles = await GetVehicles(phase);
+            ObjectListView.ItemsSource = vehicles;
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private async Task<List<Vehicle>> GetVehicles(string phase)
+        {
+            using (DBContext context = new DBContext())
+            {
+                return await context.Vehicles
+                    .Where(v => v.Mark.Name.Contains(phase) ||
+                    v.Model.Name.Contains(phase) ||
+                    v.RegistrationNumber.Contains(phase) ||
+                    v.VIN.Contains(phase)).ToListAsync();
+            }
+        }
+
+        private void AddNewCar_Click(object sender, RoutedEventArgs e)
         {
 
         }

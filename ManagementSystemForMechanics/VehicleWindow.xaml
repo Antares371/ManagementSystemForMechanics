@@ -1,0 +1,124 @@
+﻿<Window x:Class="ManagementSystemForMechanics.VehicleWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ManagementSystemForMechanics"
+        mc:Ignorable="d"
+        Title="VehicleWindow" Height="450" Width="800">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="25" />
+        </Grid.RowDefinitions>
+        <Label Name="CarLabel"
+               Content="Vehicle"
+               FontSize="25"
+               FontStyle="Italic"
+               FontWeight="Bold"
+               Margin="20,10"></Label>
+        <TabControl Grid.Row="1">
+            <TabItem Header="Info"></TabItem>
+            <TabItem Header="Service">
+                <ListView Name="ServicesListView">
+                    <ListView.Resources>
+                        <Style TargetType="{x:Type GridViewColumnHeader}">
+                            <Setter Property="HorizontalContentAlignment"
+                                    Value="Left" />
+                            <Setter Property="Padding"
+                                    Value="10,0,0,0" />
+                        </Style>
+                    </ListView.Resources>
+                    <ListView.ContextMenu>
+                        <ContextMenu>
+                            <MenuItem Header="Add New" />
+                            <MenuItem Header="Edit" />
+                            <Separator />
+                            <MenuItem Header="Remove" />
+                        </ContextMenu>
+                    </ListView.ContextMenu>
+                    <ListView.View>
+                        <GridView>
+                            <GridViewColumn Header="Id"
+                                            Width="45"
+                                            DisplayMemberBinding="{Binding Id}" />
+                            <GridViewColumn Header="Service"
+                                            Width="250"
+                                            DisplayMemberBinding="{Binding Service}" />
+                            <GridViewColumn Header="Price"
+                                            Width="100"
+                                            DisplayMemberBinding="{Binding Price}" />
+                            <GridViewColumn Header="Date"
+                                            Width="100"
+                                            DisplayMemberBinding="{Binding Date}" />
+                            <GridViewColumn Header="Mechanic"
+                                            Width="150"
+                                            DisplayMemberBinding="{Binding Mechanic}" />
+                            <GridViewColumn Header="Modyfied Date"
+                                            Width="100"
+                                            DisplayMemberBinding="{Binding Modyfied}" />
+                            <GridViewColumn Header="Created Date"
+                                            Width="100"
+                                            DisplayMemberBinding="{Binding Created}" />
+                        </GridView>
+                    </ListView.View>
+                    <ListView.GroupStyle>
+                        <GroupStyle>
+                            <GroupStyle.HeaderTemplate>
+                                <DataTemplate>
+                                    <TextBlock FontWeight="Bold"
+                                               FontSize="14"
+                                               Text="{Binding Year}" />
+                                </DataTemplate>
+                            </GroupStyle.HeaderTemplate>
+                        </GroupStyle>
+                    </ListView.GroupStyle>
+                </ListView>
+            </TabItem>
+            <TabItem Header="Persons &amp; Comanies">
+                <ListView Name="CustomersListView">
+                    <ListView.Resources>
+                        <Style TargetType="{x:Type GridViewColumnHeader}">
+                            <Setter Property="HorizontalContentAlignment"
+                                    Value="Left" />
+                            <Setter Property="Padding"
+                                    Value="10,0,0,0" />
+                        </Style>
+                    </ListView.Resources>
+                    <ListView.ContextMenu>
+                        <ContextMenu>
+                            <MenuItem Header="Add New" />
+                            <MenuItem Header="Edit" />
+                            <Separator />
+                            <MenuItem Header="Remove" />
+                        </ContextMenu>
+                    </ListView.ContextMenu>
+                    <ListView.View>
+                        <GridView>
+                            <GridViewColumn Header="Id"
+                                            Width="45"
+                                            DisplayMemberBinding="{Binding Id}" />
+                            <GridViewColumn Header="Name"
+                                            Width="150"
+                                            DisplayMemberBinding="{Binding Name}" />
+                            <GridViewColumn Header="Phone"
+                                            Width="125"
+                                            DisplayMemberBinding="{Binding Phone}" />
+                            <GridViewColumn Header="Email"
+                                            Width="125"
+                                            DisplayMemberBinding="{Binding Email}" />
+                            <GridViewColumn Header="Modyfied Date"
+                                            Width="150"
+                                            DisplayMemberBinding="{Binding Modyfied}" />
+                            <GridViewColumn Header="Created Date"
+                                            Width="150"
+                                            DisplayMemberBinding="{Binding Created}" />
+                        </GridView>
+                    </ListView.View>
+                                    </ListView>
+            </TabItem>
+            <TabItem Header="Info?"></TabItem>
+        </TabControl>
+    </Grid>
+</Window>

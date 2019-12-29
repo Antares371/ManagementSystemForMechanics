@@ -2,6 +2,7 @@
 using ManagementSystemForMechanics.Models;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -54,49 +55,56 @@ namespace ManagementSystemForMechanics
             LoadingIcon.Visibility = Visibility.Hidden;
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private async void Button_Click(object sender, RoutedEventArgs e)
         {
             LoadingIcon.Visibility = Visibility.Visible;
 
             if (!ValidInputData())
                 return;
 
-            Account account = GetAccount();
+            Account account = await GetAccount();
             if (account == null)
             {
                 ShowMessage("User do not exist. Incorrect login or password.");
                 Password = string.Empty;
                 return;
             }
+            await LoginAccount(account);
             MainWindow mainWindow = new MainWindow(account);
             mainWindow.Show();
 
             Close();
 
         }
-
-        private Account GetAccount()
+        private async Task LoginAccount(Account account)
         {
-            Account account = null;
             using (DBContext context = new DBContext())
             {
-                account = context.Accounts.Where(a => a.Login == Login && a.Password == Password && a.IsActive).AsParallel().FirstOrDefault();
-                if (account != null)
-                {
-                    account.IsLogged = true;
-                }
-                context.SaveChanges();
+                context.Accounts.Attach(account).IsLogged = true;
+                await context.SaveChangesAsync();
             }
 
-            return account;
-        }
 
-        private Account LoginAccount(string login, string password)
+        }
+        private async Task<Account> GetAccount()
         {
-            Thread.Sleep(5000);
 
-            return null;
+            using (DBContext context = new DBContext())
+            {
+                //Account account = 
+                return await context.Accounts
+                    .Where(a => a.Login == Login && a.Password == Password && a.IsActive)
+                    .FirstOrDefaultAsync();
+                //if (account != null)
+                //{
+                //    account.IsLogged = true;
+                //}
+                // context.SaveChanges();
+                //return account;
+            }
+
         }
+
 
         private bool ValidInputData()
         {
@@ -115,22 +123,6 @@ namespace ManagementSystemForMechanics
             }
             return true;
         }
-
-
-
-        private async Task<Account> GetAccountAsync(string login, string password)
-        {
-            Account account;
-            using (DBContext context = new DBContext())
-            {
-                account = context.Accounts.Where(a => a.Login == login && a.Password == password && a.IsActive).AsParallel().FirstOrDefault();
-            }
-            return account;
-        }
-
-
-
-
 
         private void ShowMessage(string hint)
         {

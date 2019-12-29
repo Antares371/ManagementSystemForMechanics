@@ -17,7 +17,7 @@ namespace ManagementSystemForMechanics.Models
 
         public DateTime Modyfied { get; set; }
 
-        public Mechanic User { get; set; }
+        public virtual Mechanic User { get; set; }
         public AccountType Type { get; set; }
         public bool IsActive { get; set; }
         public bool IsLogged { get; set; }

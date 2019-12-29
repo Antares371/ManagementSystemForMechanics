@@ -34,7 +34,7 @@
         
         <ToolBarTray Grid.Row="1">
             <ToolBar>
-                <Button Content="New" Click="Button_Click"/>
+                <Button Content="New" Click="AddNewCar_Click"/>
                 <Button Content="Edit" />
                 <Button Content="Remove" />
             </ToolBar>
@@ -49,10 +49,58 @@
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="auto" />
                 </Grid.ColumnDefinitions>
-                <TextBox Grid.Column="0" Margin="10"></TextBox>
+                <TextBox Name="SearchedPhase" Grid.Column="0" Margin="10"></TextBox>
                 <Button  Grid.Column="1" Margin="10" Content="Wyszukaj" Click="Search"></Button>
             </Grid>
-        <ListView Grid.Row="1" Margin="10" ></ListView>
+        <ListView Name="ObjectListView" Grid.Row="1" Margin="10" >
+                    <ListView.Resources>
+                        <Style TargetType="{x:Type GridViewColumnHeader}">
+                            <Setter Property="HorizontalContentAlignment"
+                                    Value="Left" />
+                        <Setter Property="Padding"
+                                Value="10,0,0,0" />
+                    </Style>
+                    </ListView.Resources>
+                <ListView.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem Header="Add New" />
+                        <MenuItem Header="Edit" />
+                        <Separator />
+                        <MenuItem Header="Remove" />
+                    </ContextMenu>
+                </ListView.ContextMenu>
+                <ListView.View>
+                    <GridView>
+                        <GridViewColumn Header="Id"
+                                        Width="45"
+                                        DisplayMemberBinding="{Binding Id}" />
+                        <GridViewColumn Header="Name"
+                                        Width="350"
+                                        DisplayMemberBinding="{Binding Vehicle}" />
+                        <GridViewColumn Header="Year"
+                                        Width="100"
+                                        DisplayMemberBinding="{Binding Year}" />
+                        <GridViewColumn Header="Modyfied Date"
+                                        Width="150"
+                                        DisplayMemberBinding="{Binding Modyfied}" />
+                        <GridViewColumn Header="Created Date"
+                                        Width="150"
+                                        DisplayMemberBinding="{Binding Created}" />
+                        
+                    </GridView>
+                </ListView.View>
+                <ListView.GroupStyle>
+                    <GroupStyle>
+                        <GroupStyle.HeaderTemplate>
+                            <DataTemplate>
+                                <TextBlock FontWeight="Bold"
+                                           FontSize="14"
+                                           Text="{Binding Year}" />
+                            </DataTemplate>
+                        </GroupStyle.HeaderTemplate>
+                    </GroupStyle>
+                </ListView.GroupStyle>
+            </ListView>
         </Grid>
     </Grid>
 </Window>

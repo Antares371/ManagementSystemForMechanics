@@ -11,7 +11,7 @@ namespace ManagementSystemForMechanics.Models
         public DateTime Modyfied { get; set; }
 
         public string Name { get; set; }
-        public List<VehicleModel> Models { get; set; }
+        public virtual List<VehicleModel> Models { get; set; }
 
         public VehicleMark()
         {

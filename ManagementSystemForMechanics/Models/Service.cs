@@ -12,8 +12,8 @@ namespace ManagementSystemForMechanics.Models
         public int Id { get; set; }
         public DateTime Created { get; set; }
         public DateTime Modyfied { get; set; }
-        public Vehicle Vehicle { get; set; }
-        public Service Service { get; set; }
+        public virtual Vehicle Vehicle { get; set; }
+        public virtual Service Service { get; set; }
     }
 
     public class Service : IEntityModel
