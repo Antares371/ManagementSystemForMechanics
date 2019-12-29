@@ -1,0 +1,45 @@
+﻿<Window x:Class="ManagementSystemForMechanics.LoginWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ManagementSystemForMechanics"
+        xmlns:gif="http://wpfanimatedgif.codeplex.com"
+        mc:Ignorable="d"
+        Title="LoginWindow"
+        Height="450"
+        Width="350"
+        WindowStartupLocation="CenterScreen">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="25" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="75" />
+        </Grid.RowDefinitions>
+        <StackPanel Grid.Row="1"
+                    Width="220"
+                    Margin="0,20"
+                    HorizontalAlignment="Center">
+            <Image Name="LoadingIcon"
+                   Width="48"
+                   Height="48"
+                   gif:ImageBehavior.AnimatedSource="Resources/loading1_48.gif"
+                   HorizontalAlignment="Center" />
+            <TextBlock Name="txtMessage"
+                       TextWrapping="WrapWithOverflow"
+                       HorizontalAlignment="Center"
+                       MinHeight="32" />
+            <TextBox Name="txtLogin"
+                     TextChanged="TxtLogin_TextChanged"
+                     Margin="0,10"
+                     Text="admin" />
+            <PasswordBox Name="txtPassword"
+                         Password="Pass"
+                         PasswordChanged="TxtPassword_PasswordChanged"
+                         Margin="0,10" />
+            <Button Margin="0,10"
+                    Click="Button_Click"
+                    Content="Zaloguj" />
+        </StackPanel>
+    </Grid>
+</Window>

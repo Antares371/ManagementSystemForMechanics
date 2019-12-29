@@ -1,0 +1,6 @@
+﻿Cześć
+
+Wszystko w porządku z tym tylko mam 2 sprawy
+
+    Potrzebuje wersji okrojonej tego softu bez baz danych albo funkcjonalności no i pełnej
+    Podział aplikacji na 2. Jedna dla Admina gdzie dodatkowo można by było podglądać logi z systemu. I 2 dla usera. 
