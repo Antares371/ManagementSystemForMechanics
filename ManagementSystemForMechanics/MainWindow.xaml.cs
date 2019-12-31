@@ -63,7 +63,7 @@ namespace ManagementSystemForMechanics
         private async void Search(object sender, RoutedEventArgs e)
         {
             string phase = SearchedPhase.Text.Trim();
-          var vehicles = await GetVehicles(phase);
+            List<Vehicle> vehicles = await GetVehicles(phase);
             ObjectListView.ItemsSource = vehicles;
         }
 
@@ -75,7 +75,10 @@ namespace ManagementSystemForMechanics
                     .Where(v => v.Mark.Name.Contains(phase) ||
                     v.Model.Name.Contains(phase) ||
                     v.RegistrationNumber.Contains(phase) ||
-                    v.VIN.Contains(phase)).ToListAsync();
+                    v.VIN.Contains(phase))
+                    .Include(p=> p.Mark)
+                    .Include(p=> p.Model)
+                    .ToListAsync();
             }
         }
 

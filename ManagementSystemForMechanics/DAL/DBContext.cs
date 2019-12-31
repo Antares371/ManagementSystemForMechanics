@@ -23,7 +23,7 @@ namespace ManagementSystemForMechanics.DAL
         public event EventHandler SaveChangesEventHandler;
         public event EventHandler SaveChangesAsyncEventHandler;
 
-        public DBContext() : base("AutoServisManagementSystem")
+        public DBContext() : base("name=AutoServisManagementSystem")
         {
             SaveChangesEventHandler += DBContext_SaveChangesEventHandler;
             SaveChangesAsyncEventHandler += DBContext_SaveChangesAsyncEventHandler;
@@ -33,7 +33,7 @@ namespace ManagementSystemForMechanics.DAL
 
         private void Configure()
         {
-            Configuration.LazyLoadingEnabled = false;
+            //Configuration.LazyLoadingEnabled = true;
         }
 
         private void Initialize()
@@ -44,9 +44,7 @@ namespace ManagementSystemForMechanics.DAL
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             modelBuilder.Properties().Where(p => p.Name == "ID").Configure(p => p.IsKey());
-            modelBuilder.Properties<DateTime>().Configure(c => c.HasColumnType("datetime2"));
-
-
+            modelBuilder.Properties<DateTime>().Configure(c => c.HasColumnType("datetime2")); 
 
             base.OnModelCreating(modelBuilder);
         }

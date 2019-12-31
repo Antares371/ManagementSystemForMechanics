@@ -43,16 +43,21 @@ namespace ManagementSystemForMechanics.DAL
         private void InitVehicles(DBContext context)
         {
             Random r = new Random();
-            
+
             for (int i = 0; i < 5000; i++)
             {
                 Vehicle v1 = new Vehicle()
                 {
-                    Year = r.Next(1999,2020),
+                    Year = r.Next(1999, 2020),
                     VIN = $"JKLSAOIN{i * 5}{i * 2}AS{i + 2}UH{i}",
-                    RegistrationNumber = $"CBY {i.ToString().PadLeft(5,'0')}"
+                    RegistrationNumber = $"CBY {i.ToString().PadLeft(5, '0')}",
                 };
+                int id = r.Next(1, 5);
+                v1.Mark = context.VehiclesMarks.Where(p => p.Id == id).FirstOrDefault();
+                v1.Model = v1.Mark.Models[r.Next(0, v1.Mark.Models.Count - 1)];
                 context.Vehicles.Add(v1);
+                if (i % 100 == 0)
+                    context.SaveChanges();
             }
         }
 
@@ -72,8 +77,9 @@ namespace ManagementSystemForMechanics.DAL
             VehicleMark mazdaMark = new VehicleMark() { Name = "Mazda" };
             mazdaMark.Models.Add(new VehicleModel("3"));
             mazdaMark.Models.Add(new VehicleModel("6"));
+            mazdaMark.Models.Add(new VehicleModel("323"));
 
-            VehicleMark volvoMark = new VehicleMark() { Name = "Mazda" };
+            VehicleMark volvoMark = new VehicleMark() { Name = "Volvo" };
             volvoMark.Models.Add(new VehicleModel("V40"));
             volvoMark.Models.Add(new VehicleModel("V60"));
             volvoMark.Models.Add(new VehicleModel("V90"));
@@ -96,6 +102,8 @@ namespace ManagementSystemForMechanics.DAL
             defaultVehiclesMarks.Add(volvoMark);
 
             context.VehiclesMarks.AddRange(defaultVehiclesMarks);
+            context.SaveChanges();
+
         }
 
         private void InitFuelsTypes(DBContext context)
