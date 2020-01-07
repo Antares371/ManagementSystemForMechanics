@@ -12,6 +12,7 @@ namespace ManagementSystemForMechanics.Models
         public int Id { get; set; }
         public string Login { get; set; }
         public string Password { get; set; }
+        public string DisplayName { get { return $"{User?.Name} {User?.Surname}"; } }
 
         public DateTime Created { get; set; }
 
@@ -21,6 +22,8 @@ namespace ManagementSystemForMechanics.Models
         public AccountType Type { get; set; }
         public bool IsActive { get; set; }
         public bool IsLogged { get; set; }
+
+        public virtual List<Permission> Permissions { get; set; }
 
         public Account(string login, string password) : this()
         {
@@ -36,6 +39,23 @@ namespace ManagementSystemForMechanics.Models
             return Login;
         }
     }
+
+    public class Permission : IEntityModel
+    {
+        public int Id { get; set; }
+        public DateTime Created { get; set; }
+        public DateTime Modyfied { get; set; }
+        public PermissionType Type { get; set; }
+        public int PermissionSum { get; set; }
+    }
+    public enum PermissionType
+    {
+        VehicleAdd = 1,
+        VehicleEdit = 2,
+        VehicleRemove = 3,
+        SettingsPanel = 4,
+    }
+
 
     public enum AccountType
     {

@@ -4,121 +4,291 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ManagementSystemForMechanics"
+        xmlns:converters="clr-namespace:ManagementSystemForMechanics.Converters"
         mc:Ignorable="d"
-        Title="VehicleWindow" Height="450" Width="800">
+        Title="VehicleWindow"
+        Height="450"
+        Width="800">
+    <Window.Resources>
+        <converters:HexToSolidColorBrushConverter x:Key="HexToSolidColorBrushConverter" />
+    </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
             <RowDefinition Height="*" />
-            <RowDefinition Height="25" />
+            <RowDefinition Height="auto" />
         </Grid.RowDefinitions>
-        <Label Name="CarLabel"
-               Content="Vehicle"
-               FontSize="25"
-               FontStyle="Italic"
-               FontWeight="Bold"
-               Margin="20,10"></Label>
-        <TabControl Grid.Row="1">
-            <TabItem Header="Info"></TabItem>
-            <TabItem Header="Service">
-                <ListView Name="ServicesListView">
-                    <ListView.Resources>
-                        <Style TargetType="{x:Type GridViewColumnHeader}">
-                            <Setter Property="HorizontalContentAlignment"
-                                    Value="Left" />
-                            <Setter Property="Padding"
-                                    Value="10,0,0,0" />
-                        </Style>
-                    </ListView.Resources>
-                    <ListView.ContextMenu>
-                        <ContextMenu>
-                            <MenuItem Header="Add New" />
-                            <MenuItem Header="Edit" />
-                            <Separator />
-                            <MenuItem Header="Remove" />
-                        </ContextMenu>
-                    </ListView.ContextMenu>
-                    <ListView.View>
-                        <GridView>
-                            <GridViewColumn Header="Id"
-                                            Width="45"
-                                            DisplayMemberBinding="{Binding Id}" />
-                            <GridViewColumn Header="Service"
-                                            Width="250"
-                                            DisplayMemberBinding="{Binding Service}" />
-                            <GridViewColumn Header="Price"
-                                            Width="100"
-                                            DisplayMemberBinding="{Binding Price}" />
-                            <GridViewColumn Header="Date"
-                                            Width="100"
-                                            DisplayMemberBinding="{Binding Date}" />
-                            <GridViewColumn Header="Mechanic"
-                                            Width="150"
-                                            DisplayMemberBinding="{Binding Mechanic}" />
-                            <GridViewColumn Header="Modyfied Date"
-                                            Width="100"
-                                            DisplayMemberBinding="{Binding Modyfied}" />
-                            <GridViewColumn Header="Created Date"
-                                            Width="100"
-                                            DisplayMemberBinding="{Binding Created}" />
-                        </GridView>
-                    </ListView.View>
-                    <ListView.GroupStyle>
-                        <GroupStyle>
-                            <GroupStyle.HeaderTemplate>
+        <Border Grid.Row="0"
+                Style="{StaticResource ResourceKey=BorderWindowSection}">
+            <Label Name="CarLabel"
+                   Content="Vehicle"
+                   FontSize="25"
+                   FontStyle="Italic"
+                   FontWeight="Bold"
+                   Margin="20,10" />
+        </Border>
+        <Border Grid.Row="1"
+                Style="{StaticResource ResourceKey=BorderWindowSection}">
+            <StackPanel Margin="10,0"
+                        Orientation="Horizontal"
+                        HorizontalAlignment="Stretch">
+                <Button Click="ButtonSave_Click"
+                        Style="{StaticResource ButtonStyle1}">Save</Button>
+                <Button Click="ButtonCancel_Click"
+                        Style="{StaticResource ButtonStyle1}">Cancel</Button>
+            </StackPanel>
+        </Border>
+        <Border Grid.Row="2"
+                Style="{StaticResource ResourceKey=BorderWindowSection}">
+            <Grid Margin="10">
+                <TabControl>
+                    <TabItem Header="Info">
+                        <ScrollViewer VerticalScrollBarVisibility="Auto">
+                            <Grid Margin="20">
+                                <Grid.Resources>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="Foreground"
+                                                Value="Gray" />
+                                        <Setter Property="FontSize"
+                                                Value="14" />
+                                        <Setter Property="TextWrapping"
+                                                Value="Wrap" />
+                                        <Setter Property="HorizontalAlignment"
+                                                Value="Left" />
+                                        <Setter Property="VerticalAlignment"
+                                                Value="Center" />
+                                    </Style>
+                                    <Style TargetType="TextBox">
+                                        <Setter Property="Foreground"
+                                                Value="Gray" />
+                                        <Setter Property="FontSize"
+                                                Value="14" />
+                                        <Setter Property="Margin"
+                                                Value="10" />
+                                        <Setter Property="Width"
+                                                Value="250" />
+                                        <Setter Property="HorizontalAlignment"
+                                                Value="Left" />
+                                        <Setter Property="VerticalAlignment"
+                                                Value="Center" />
+                                    </Style>
+                                    <Style TargetType="ComboBox">
+                                        <Setter Property="Foreground"
+                                                Value="Gray" />
+                                        <Setter Property="FontSize"
+                                                Value="14" />
+                                        <Setter Property="Margin"
+                                                Value="10" />
+                                        <Setter Property="Width"
+                                                Value="250" />
+                                        <Setter Property="HorizontalAlignment"
+                                                Value="Left" />
+                                        <Setter Property="VerticalAlignment"
+                                                Value="Center" />
+                                        <Setter Property="IsEditable"
+                                                Value="True" />
+                                    </Style>
+                                </Grid.Resources>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="auto" />
+                                    <RowDefinition Height="auto" />
+                                    <RowDefinition Height="auto" />
+                                    <RowDefinition Height="auto" />
+                                    <RowDefinition Height="auto" />
+                                    <RowDefinition Height="auto" />
+                                    <RowDefinition Height="auto" />
+                                    <RowDefinition Height="auto" />
+                                    <RowDefinition Height="auto" />
+                                    <RowDefinition Height="auto" />
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="125" />
+                                    <ColumnDefinition Width="325" />
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Grid.Row="0"
+                                           Grid.Column="0">Registration Number:</TextBlock>
+                                <TextBox Grid.Row="0"
+                                         Grid.Column="1"
+                                         Text="{Binding VehicleRegistrationNumber}" />
+                                <TextBlock Grid.Row="1"
+                                           Grid.Column="0">VIN:</TextBlock>
+                                <TextBox Grid.Row="1"
+                                         Grid.Column="1"
+                                         Text="{Binding VehicleVIN}" />
+                                <TextBlock Grid.Row="2"
+                                           Grid.Column="0">Mark:</TextBlock>
+                                <ComboBox Name="comboBoxMarks" Grid.Row="2"
+                                          Grid.Column="1"
+                                          ItemsSource="{Binding VehicleMarks}"
+                                          SelectedItem="{Binding VehicleMark, UpdateSourceTrigger=PropertyChanged}"   SelectionChanged="ComboBoxMarks_SelectionChanged"
+                                          DisplayMemberPath="Name" />
+                                <TextBlock Grid.Row="3"
+                                           Grid.Column="0">Model:</TextBlock>
+                                <ComboBox Grid.Row="3"
+                                          Grid.Column="1"
+                                          ItemsSource="{Binding  ElementName=comboBoxMarks, Path=SelectedItem.Models}"
+                                          SelectedItem="{Binding VehicleModel}"
+                                          DisplayMemberPath="Name" />
+                                <TextBlock Grid.Row="4"
+                                           Grid.Column="0">Motor Capacity:</TextBlock>
+                                <TextBox Grid.Row="4"
+                                         Grid.Column="1"
+                                         Text="{Binding VehicleMotorCapacity}" />
+                                <TextBlock Grid.Row="5"
+                                           Grid.Column="0">Motor Power:</TextBlock>
+                                <TextBox Grid.Row="5"
+                                         Grid.Column="1"
+                                         Text="{Binding VehiclePower}" />
+                                <TextBlock Grid.Row="6"
+                                           Grid.Column="0">Version:</TextBlock>
+                                <TextBox Grid.Row="6"
+                                         Grid.Column="1"
+                                         Text="{Binding VehicleVersion}" />
+                                <TextBlock Grid.Row="7"
+                                           Grid.Column="0">Year:</TextBlock>
+                                <TextBox Grid.Row="7"
+                                         Grid.Column="1"
+                                         Text="{Binding VehicleYear}" />
+                                <TextBlock Grid.Row="8"
+                                           Grid.Column="0">Color:</TextBlock>
+                                <Rectangle Grid.Row="8"
+                                           Grid.Column="1"
+                                           Fill="{Binding VehicleColour, Converter={StaticResource ResourceKey=HexToSolidColorBrushConverter}}" />
+                                <TextBlock Grid.Row="8"
+                                           Grid.Column="1"
+                                           Text="{Binding VehicleColor}" />
+                                <TextBlock Grid.Row="9"
+                                           Grid.Column="0">Fuel Type:</TextBlock>
+                                <ComboBox Grid.Row="9"
+                                          Grid.Column="1"
+                                          ItemsSource="{Binding FuelTypes}"
+                                          SelectedItem="{Binding VehicleFuelType}"
+                                          DisplayMemberPath="Name" />
+                            </Grid>
+                        </ScrollViewer>
+                    </TabItem>
+                    <TabItem Header="Service">
+                        <!--<Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="8*" />
+                                <ColumnDefinition Width="3" />
+                                <ColumnDefinition Width="2*" />
+                            </Grid.ColumnDefinitions>-->
+                        <DataGrid  Name="dataGridVehiclesMarks"
+                                   ItemsSource="{Binding VehicleServicesList}"
+                                   AutoGenerateColumns="False"
+                                   RowDetailsVisibilityMode="VisibleWhenSelected"
+                                   AreRowDetailsFrozen="False">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="Id"
+                                                    Binding="{Binding Id}"
+                                                    Width="auto"
+                                                    IsReadOnly="True" />
+                                <DataGridTextColumn Header="Start Date"
+                                                    Width="445"
+                                                    Binding="{Binding StartDate}" />
+                                <DataGridTextColumn Header="Finish Date"
+                                                    Width="445"
+                                                    Binding="{Binding FinishDate}" />
+                                <DataGridTextColumn Header="Total Price"
+                                                    Binding="{Binding TotalPrice}" />
+                                <DataGridTextColumn Header="Modyfied Date"
+                                                    Binding="{Binding Modyfied}"
+                                                    Width="125"
+                                                    IsReadOnly="True" />
+                                <DataGridTextColumn Header="Created Date"
+                                                    Binding="{Binding Created}"
+                                                    Width="125"
+                                                    IsReadOnly="True" />
+                            </DataGrid.Columns>
+                            <DataGrid.RowDetailsTemplate>
                                 <DataTemplate>
-                                    <TextBlock FontWeight="Bold"
-                                               FontSize="14"
-                                               Text="{Binding Year}" />
+                                    <Grid Margin="25,10">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="auto" />
+                                            <RowDefinition Height="*" />
+                                        </Grid.RowDefinitions>
+                                        <TextBlock Grid.Row="0"
+                                                   Text="Models" />
+                                        <DataGrid Grid.Row="1"
+                                                  Name="listViewVehicleModels"
+                                                  ItemsSource="{Binding Services}"
+                                                  AutoGenerateColumns="False">
+                                            <DataGrid.Columns>
+                                                <DataGridTextColumn Header="Id"
+                                                                    Binding="{Binding Id}"
+                                                                    IsReadOnly="True" />
+                                                <DataGridTextColumn Header="Name"
+                                                                    Binding="{Binding Name}" />
+                                                <DataGridTextColumn Header="Price"
+                                                                    Binding="{Binding Price}" />
+                                                <DataGridTextColumn Header="Modyfied Date"
+                                                                    Binding="{Binding Modyfied}"
+                                                                    IsReadOnly="True" />
+                                                <DataGridTextColumn Header="Created Date"
+                                                                    Binding="{Binding Created}"
+                                                                    IsReadOnly="True" />
+                                            </DataGrid.Columns>
+                                        </DataGrid>
+                                    </Grid>
                                 </DataTemplate>
-                            </GroupStyle.HeaderTemplate>
-                        </GroupStyle>
-                    </ListView.GroupStyle>
-                </ListView>
-            </TabItem>
-            <TabItem Header="Persons &amp; Comanies">
-                <ListView Name="CustomersListView">
-                    <ListView.Resources>
-                        <Style TargetType="{x:Type GridViewColumnHeader}">
-                            <Setter Property="HorizontalContentAlignment"
-                                    Value="Left" />
-                            <Setter Property="Padding"
-                                    Value="10,0,0,0" />
-                        </Style>
-                    </ListView.Resources>
-                    <ListView.ContextMenu>
-                        <ContextMenu>
-                            <MenuItem Header="Add New" />
-                            <MenuItem Header="Edit" />
-                            <Separator />
-                            <MenuItem Header="Remove" />
-                        </ContextMenu>
-                    </ListView.ContextMenu>
-                    <ListView.View>
-                        <GridView>
-                            <GridViewColumn Header="Id"
-                                            Width="45"
-                                            DisplayMemberBinding="{Binding Id}" />
-                            <GridViewColumn Header="Name"
-                                            Width="150"
-                                            DisplayMemberBinding="{Binding Name}" />
-                            <GridViewColumn Header="Phone"
-                                            Width="125"
-                                            DisplayMemberBinding="{Binding Phone}" />
-                            <GridViewColumn Header="Email"
-                                            Width="125"
-                                            DisplayMemberBinding="{Binding Email}" />
-                            <GridViewColumn Header="Modyfied Date"
-                                            Width="150"
-                                            DisplayMemberBinding="{Binding Modyfied}" />
-                            <GridViewColumn Header="Created Date"
-                                            Width="150"
-                                            DisplayMemberBinding="{Binding Created}" />
-                        </GridView>
-                    </ListView.View>
-                                    </ListView>
-            </TabItem>
-            <TabItem Header="Info?"></TabItem>
-        </TabControl>
+                            </DataGrid.RowDetailsTemplate>
+                        </DataGrid>
+                        <!--<GridSplitter Grid.Column="1"
+                                          HorizontalAlignment="Stretch" />
+                        </Grid>-->
+                    </TabItem>
+                    <TabItem Header="Persons &amp; Comanies">
+                        <ListView Name="CustomersListView">
+                            <ListView.Resources>
+                                <Style TargetType="{x:Type GridViewColumnHeader}">
+                                    <Setter Property="HorizontalContentAlignment"
+                                            Value="Left" />
+                                    <Setter Property="Padding"
+                                            Value="10,0,0,0" />
+                                </Style>
+                            </ListView.Resources>
+                            <ListView.ContextMenu>
+                                <ContextMenu>
+                                    <MenuItem Header="Add New" />
+                                    <MenuItem Header="Edit" />
+                                    <Separator />
+                                    <MenuItem Header="Remove" />
+                                </ContextMenu>
+                            </ListView.ContextMenu>
+                            <ListView.View>
+                                <GridView>
+                                    <GridViewColumn Header="Id"
+                                                    Width="45"
+                                                    DisplayMemberBinding="{Binding Id}" />
+                                    <GridViewColumn Header="Name"
+                                                    Width="150"
+                                                    DisplayMemberBinding="{Binding Name}" />
+                                    <GridViewColumn Header="Phone"
+                                                    Width="125"
+                                                    DisplayMemberBinding="{Binding Phone}" />
+                                    <GridViewColumn Header="Email"
+                                                    Width="125"
+                                                    DisplayMemberBinding="{Binding Email}" />
+                                    <GridViewColumn Header="Modyfied Date"
+                                                    Width="150"
+                                                    DisplayMemberBinding="{Binding Modyfied}" />
+                                    <GridViewColumn Header="Created Date"
+                                                    Width="150"
+                                                    DisplayMemberBinding="{Binding Created}" />
+                                </GridView>
+                            </ListView.View>
+                        </ListView>
+                    </TabItem>
+                    <TabItem Header="Info?"></TabItem>
+                </TabControl>
+            </Grid>
+        </Border>
+        <Border Grid.Row="3"
+                Style="{StaticResource ResourceKey=BorderWindowSection}">
+            <TextBlock Text="{Binding Message}"
+                       Style="{StaticResource ActionMessageStyle}" />
+        </Border>
     </Grid>
 </Window>

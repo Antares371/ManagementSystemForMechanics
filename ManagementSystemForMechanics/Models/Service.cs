@@ -12,8 +12,17 @@ namespace ManagementSystemForMechanics.Models
         public int Id { get; set; }
         public DateTime Created { get; set; }
         public DateTime Modyfied { get; set; }
-        public virtual Vehicle Vehicle { get; set; }
-        public virtual Service Service { get; set; }
+
+        public virtual List<Service> Services { get; set; }
+        public DateTime StartDate { get; set; }
+        public DateTime FinishDate { get; set; }
+
+        public decimal TotalPrice { get { return Services.Sum(s=> s.Price); } }
+        public VehicleService()
+        {
+            Services = new List<Service>();
+        }
+
     }
 
     public class Service : IEntityModel
@@ -22,7 +31,8 @@ namespace ManagementSystemForMechanics.Models
         public DateTime Created { get; set; }
         public DateTime Modyfied { get; set; }
 
-        public string Description { get; set; }
+        public string Name { get; set; }
         public decimal Price { get; set; }
+        public virtual ICollection<VehicleService> VehicleServices { get;  set; }
     }
 }

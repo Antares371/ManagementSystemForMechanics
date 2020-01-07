@@ -13,38 +13,93 @@ namespace ManagementSystemForMechanics.DAL
 
         protected override void Seed(DBContext context)
         {
-            if (context.Accounts.Any())
-            {
-                return;   // DB has been seeded
-            }
-
-            Account serverAccount = new Account() { Login = "Server", Password = "Pass", IsActive = true };
-            context.Accounts.Add(serverAccount);
-
-            Account adminAccount = new Account() { Login = "admin", Password = "Pass", IsActive = true };
-            context.Accounts.Add(adminAccount);
-            Account mecanicAccount1 = new Account() { Login = "mecanic", Password = "Pass", IsActive = true };
-            context.Accounts.Add(mecanicAccount1);
-            Account mecanicAccount2 = new Account() { Login = "mecanic", Password = "Pass", IsActive = true };
-            context.Accounts.Add(mecanicAccount2);
-            Account mecanicAccount3 = new Account() { Login = "mecanic", Password = "Pass", IsActive = true };
-            context.Accounts.Add(mecanicAccount3);
-
-            context.SaveChanges();
-
+            InitPositions(context);
             InitCarsMarks(context);
+            InitAccounts(context);
             InitFuelsTypes(context);
+            InitServices(context);
             InitVehicles(context);
+            InitSystemLogs(context);
             context.SaveChanges();
 
             base.Seed(context);
+        }
+
+        private void InitSystemLogs(DBContext context)
+        {
+            List<SystemLog> logs = new List<SystemLog>();
+            Random r = new Random();
+            for (int i = 0; i < 100; i++)
+            {
+                logs.Add(new SystemLog() { Action = "", LogType = (LogType)r.Next(1, 8) });
+            }
+            context.SystemLogs.AddRange(logs);
+        }
+
+        private void InitServices(DBContext context)
+        {
+            List<Service> services = new List<Service>() {
+                new Service(){Name="Service 1", Price = 100},
+                new Service(){Name="Service 2", Price = 200},
+                new Service(){Name="Service 3", Price = 450},
+                new Service(){Name="Service 4", Price = 25},
+                new Service(){Name="Service 5", Price = 500},
+                new Service(){Name="Service 6", Price = 135},
+                new Service(){Name="Service 7", Price = 70},
+                new Service(){Name="Service 8", Price = 45},
+                new Service(){Name="Service 9", Price = 10}
+                };
+            context.Services.AddRange(services);
+            context.SaveChanges();
+
+        }
+
+        private void InitPositions(DBContext context)
+        {
+            List<Position> positions = new List<Position>()
+            {
+                new Position(){Name = "Young mechanic"},
+                new Position(){Name = "Senior mechanic"},
+                new Position(){Name = "Specjalist mechanic"},
+                new Position(){Name = "Office employer"}
+            };
+            context.Positions.AddRange(positions);
+            context.SaveChanges();
+        }
+
+        private void InitAccounts(DBContext context)
+        {
+            if (context.Accounts.Any())
+            {
+                return;
+            }
+
+            Account serverAccount = new Account() { Login = "Server", Password = "Pass", IsActive = true };
+            serverAccount.User = new Mechanic() { Name = "ServerUser", Surname = "0", Email = "ServerUser@as.pl" };
+            context.Accounts.Add(serverAccount);
+
+            Account adminAccount = new Account() { Login = "admin", Password = "Pass", IsActive = true };
+            adminAccount.User = new Mechanic() { Name = "Administrator", Surname = "1", Email = "Administrator@as.pl" };
+            context.Accounts.Add(adminAccount);
+
+            Account mechanicAccount1 = new Account() { Login = "mechanic1", Password = "Pass", IsActive = true };
+            mechanicAccount1.User = new Mechanic() { Name = "User", Surname = "1", Email = "User1@as.pl" };
+            context.Accounts.Add(mechanicAccount1);
+            Account mechanicAccount2 = new Account() { Login = "mechanic2", Password = "Pass", IsActive = false };
+            mechanicAccount2.User = new Mechanic() { Name = "User", Surname = "2", Email = "User2@as.pl" };
+            context.Accounts.Add(mechanicAccount2);
+            Account mechanicAccount3 = new Account() { Login = "mechanic3", Password = "Pass", IsActive = true };
+            mechanicAccount3.User = new Mechanic() { Name = "User", Surname = "3", Email = "User3@as.pl" };
+            context.Accounts.Add(mechanicAccount3);
+
+            context.SaveChanges();
         }
 
         private void InitVehicles(DBContext context)
         {
             Random r = new Random();
 
-            for (int i = 0; i < 5000; i++)
+            for (int i = 0; i < 200; i++)
             {
                 Vehicle v1 = new Vehicle()
                 {
@@ -53,12 +108,26 @@ namespace ManagementSystemForMechanics.DAL
                     RegistrationNumber = $"CBY {i.ToString().PadLeft(5, '0')}",
                 };
                 int id = r.Next(1, 5);
+                int ft = r.Next(1, 3);
                 v1.Mark = context.VehiclesMarks.Where(p => p.Id == id).FirstOrDefault();
                 v1.Model = v1.Mark.Models[r.Next(0, v1.Mark.Models.Count - 1)];
+                v1.FuelType = context.FuelTypes.FirstOrDefault(t => t.Id == ft);
+                int vsCount = r.Next(1, 10);
+                for (int j = 0; j <= vsCount; j++)
+                {
+                    VehicleService vs = new VehicleService();
+                    int sId = r.Next(1, 9);
+                    Service service = context.Services.FirstOrDefault(s => s.Id == sId);
+                    if (!vs.Services.Contains(service))
+                        vs.Services.Add(service);
+                    v1.Services.Add(vs);
+
+                }
                 context.Vehicles.Add(v1);
                 if (i % 100 == 0)
                     context.SaveChanges();
             }
+            context.SaveChanges();
         }
 
         private void InitCarsMarks(DBContext context)
@@ -108,15 +177,15 @@ namespace ManagementSystemForMechanics.DAL
 
         private void InitFuelsTypes(DBContext context)
         {
-            IList<MotorType> defaultFuelsTypes = new List<MotorType>()
+            IList<FuelType> defaultFuelsTypes = new List<FuelType>()
             {
-                new MotorType() { Name = "Diesel" },
-                new MotorType() { Name = "Benzyna" },
-                new MotorType() { Name = "Electric" }
+                new FuelType() { Name = "Diesel" },
+                new FuelType() { Name = "Benzyna" },
+                new FuelType() { Name = "Electric" }
             };
 
             context.FuelTypes.AddRange(defaultFuelsTypes);
-
+            context.SaveChanges();
         }
     }
 }

@@ -13,27 +13,22 @@ namespace ManagementSystemForMechanics.Models
         public DateTime Created { get; set; }
         public DateTime Modyfied { get; set; }
 
-        public string Description { get; set; }
         public LogType LogType { get; set; }
-        public static void Info(string message)
-        {
-
-        }
-        public static void Error(string message)
-        {
-
-        }
-        public static void Warning(string message)
-        {
-
-        }
+        public string Action { get; set; }
+        public static Account Account { get; set; }
+        public DateTime Date { get; protected set; }
     }
 
     public enum LogType
     {
-        Info,
-        Error,
-        Warning,
+        Add = 1,
+        Modify = 2,
+        Remove = 3,
+        Login = 4,
+        Logout = 5,
+        Error = 6,
+        Warning = 7,
+        Info = 8,
 
     }
 }

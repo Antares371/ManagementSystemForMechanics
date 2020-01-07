@@ -21,11 +21,9 @@
                Margin="20,10"></Label>
         <StackPanel Orientation="Horizontal"
                     Grid.Row="2" HorizontalAlignment="Right" Margin="20">
-            <Button Width="145"
-                    Height="35"
+            <Button  Style="{StaticResource ResourceKey=ButtonStyle}"
                     Margin="10">Save</Button>
-            <Button Width="145"
-                    Height="35"
+            <Button  Style="{StaticResource ResourceKey=ButtonStyle}"
                     Margin="10">Cancel</Button>
         </StackPanel>
     </Grid>

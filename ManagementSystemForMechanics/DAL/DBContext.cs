@@ -15,10 +15,17 @@ namespace ManagementSystemForMechanics.DAL
     public class DBContext : DbContext
     {
         public DbSet<Account> Accounts { get; set; }
+        public DbSet<Mechanic> Mechanics { get; set; }
+        public DbSet<Person> Persons{ get; set; }
+        public DbSet<Position> Positions { get; set; }
 
         public DbSet<VehicleMark> VehiclesMarks { get; set; }
-        public DbSet<MotorType> FuelTypes { get; set; }
+        public DbSet<VehicleModel> VehiclesModels { get; set; }
+        public DbSet<FuelType> FuelTypes { get; set; }
         public DbSet<Vehicle> Vehicles { get; set; }
+        public DbSet<VehicleService> VehicleService { get; set; }
+        public DbSet<Service> Services { get; set; }
+        public DbSet<SystemLog> SystemLogs { get; set; }
 
         public event EventHandler SaveChangesEventHandler;
         public event EventHandler SaveChangesAsyncEventHandler;
@@ -43,8 +50,18 @@ namespace ManagementSystemForMechanics.DAL
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
-            modelBuilder.Properties().Where(p => p.Name == "ID").Configure(p => p.IsKey());
-            modelBuilder.Properties<DateTime>().Configure(c => c.HasColumnType("datetime2")); 
+            modelBuilder.Properties().Where(p => p.Name == "Id").Configure(p => p.IsKey());
+            modelBuilder.Properties<DateTime>().Configure(c => c.HasColumnType("datetime2"));
+
+            //modelBuilder.Entity<VehicleService>()
+            //   .HasMany<Service>(s => s.Services)
+            //   .WithMany(c => c.VehicleServices)
+            //   .Map(cs =>
+            //   {
+            //       cs.MapLeftKey("VehicleServiceId");
+            //       cs.MapRightKey("ServiceId");
+            //       cs.ToTable("rVehicleService_Service");
+            //   });
 
             base.OnModelCreating(modelBuilder);
         }
@@ -78,6 +95,7 @@ namespace ManagementSystemForMechanics.DAL
 
         private void DBContext_SaveChangesEventHandler(object sender, EventArgs e)
         {
+
             UpdateCreatedModifieldTimestamp();
         }
         private void DBContext_SaveChangesAsyncEventHandler(object sender, EventArgs e)
@@ -107,6 +125,30 @@ namespace ManagementSystemForMechanics.DAL
             });
         }
 
+        public void RollBack()
+        {
+
+            List<DbEntityEntry> changedEntries = ChangeTracker.Entries()
+                .Where(x => x.State != EntityState.Unchanged)
+                .ToList();
+
+            foreach (DbEntityEntry entry in changedEntries)
+            {
+                switch (entry.State)
+                {
+                    case EntityState.Modified:
+                        entry.CurrentValues.SetValues(entry.OriginalValues);
+                        entry.State = EntityState.Unchanged;
+                        break;
+                    case EntityState.Added:
+                        entry.State = EntityState.Detached;
+                        break;
+                    case EntityState.Deleted:
+                        entry.State = EntityState.Unchanged;
+                        break;
+                }
+            }
+        }
 
     }
 }

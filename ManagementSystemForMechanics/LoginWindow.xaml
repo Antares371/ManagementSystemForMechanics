@@ -4,12 +4,16 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ManagementSystemForMechanics"
+        xmlns:converters="clr-namespace:ManagementSystemForMechanics.Converters"
         xmlns:gif="http://wpfanimatedgif.codeplex.com"
         mc:Ignorable="d"
         Title="LoginWindow"
         Height="450"
         Width="350"
         WindowStartupLocation="CenterScreen">
+    <Window.Resources>
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+    </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="25" />
@@ -20,21 +24,25 @@
                     Width="220"
                     Margin="0,20"
                     HorizontalAlignment="Center">
-            <Image Name="LoadingIcon"
-                   Width="48"
-                   Height="48"
-                   gif:ImageBehavior.AnimatedSource="Resources/loading1_48.gif"
-                   HorizontalAlignment="Center" />
-            <TextBlock Name="txtMessage"
-                       TextWrapping="WrapWithOverflow"
-                       HorizontalAlignment="Center"
-                       MinHeight="32" />
+            <StackPanel MinHeight="80">
+                <Image Name="LoadingIcon"
+                       VerticalAlignment="Top"
+                       Height="48"
+                       Visibility="{Binding LoadingIconVisibility, Converter={StaticResource ResourceKey=BooleanToVisibilityConverter}}"
+                       gif:ImageBehavior.AnimatedSource="Resources/loading1_48.gif"
+                       HorizontalAlignment="Center" />
+                <TextBlock Text="{Binding Message}"                             
+                           HorizontalAlignment="Stretch"
+                           VerticalAlignment="Bottom"
+                           TextAlignment="Center"
+                           TextWrapping="WrapWithOverflow"
+                           Margin="20,0"
+                           MinHeight="32" />
+            </StackPanel>
             <TextBox Name="txtLogin"
-                     TextChanged="TxtLogin_TextChanged"
-                     Margin="0,10"
-                     Text="admin" />
+                     Text="{Binding Login}"
+                     Margin="0,10" />
             <PasswordBox Name="txtPassword"
-                         Password="Pass"
                          PasswordChanged="TxtPassword_PasswordChanged"
                          Margin="0,10" />
             <Button Margin="0,10"

@@ -7,100 +7,162 @@
         mc:Ignorable="d"
         Title="MainWindow"
         Height="450"
-        Width="800"
-        WindowState="Maximized">
+        Width="800">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="auto" />
-            <RowDefinition Height="25" />
+            <RowDefinition Height="auto" />
             <RowDefinition Height="*" />
-            <RowDefinition Height="25" />
+            <RowDefinition Height="auto" />
         </Grid.RowDefinitions>
-        <Grid>
-            
-        <TextBlock FontSize="35"
-                   FontStyle="Italic"
-                   VerticalAlignment="Center"  HorizontalAlignment="Left"
-                   Margin="45,10"
-                   FontWeight="Bold">Auto Servis</TextBlock>
-            <TextBlock FontSize="35"
-                       Name="AccountData"
-                       FontStyle="Italic"
-                       VerticalAlignment="Center"
-                       HorizontalAlignment="Right"
-                       Margin="45,10"
-                       FontWeight="Bold" />
-        </Grid>
-        
-        <ToolBarTray Grid.Row="1">
-            <ToolBar>
-                <Button Content="New" Click="AddNewCar_Click"/>
-                <Button Content="Edit" />
-                <Button Content="Remove" />
-            </ToolBar>
-        </ToolBarTray>
-        <Grid Grid.Row="2">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="auto" />
-                <RowDefinition Height="*"/>
-            </Grid.RowDefinitions>
+        <Border Grid.Row="0"
+                Style="{StaticResource ResourceKey=BorderWindowSection}">
             <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="auto" />
-                </Grid.ColumnDefinitions>
-                <TextBox Name="SearchedPhase" Grid.Column="0" Margin="10"></TextBox>
-                <Button  Grid.Column="1" Margin="10" Content="Wyszukaj" Click="Search"></Button>
+                <TextBlock FontSize="35"
+                           FontStyle="Italic"
+                           HorizontalAlignment="Left"
+                           VerticalAlignment="Center"
+                           Margin="25,0"
+                           FontWeight="Bold">Auto Servis</TextBlock>
+                <StackPanel Margin="25"
+                            HorizontalAlignment="Right"
+                            VerticalAlignment="Center">
+                    <TextBlock FontSize="25"
+                               Name="AccountData"
+                               FontStyle="Italic"
+                               VerticalAlignment="Center"
+                               HorizontalAlignment="Right"
+                               FontWeight="Bold"
+                               Text="{Binding Account.DisplayName}" />
+                    <TextBlock FontSize="10"
+                               FontStyle="Italic"
+                               VerticalAlignment="Center"
+                               HorizontalAlignment="Right"
+                               FontWeight="Bold"
+                               Text="{Binding Account.User.Position.Name}" />
+                </StackPanel>
             </Grid>
-        <ListView Name="ObjectListView" Grid.Row="1" Margin="10" >
-                    <ListView.Resources>
-                        <Style TargetType="{x:Type GridViewColumnHeader}">
-                            <Setter Property="HorizontalContentAlignment"
-                                    Value="Left" />
-                        <Setter Property="Padding"
-                                Value="10,0,0,0" />
-                    </Style>
-                    </ListView.Resources>
-                <ListView.ContextMenu>
-                    <ContextMenu>
-                        <MenuItem Header="Add New" />
-                        <MenuItem Header="Edit" />
-                        <Separator />
-                        <MenuItem Header="Remove" />
-                    </ContextMenu>
-                </ListView.ContextMenu>
-                <ListView.View>
-                    <GridView>
-                        <GridViewColumn Header="Id"
-                                        Width="45"
-                                        DisplayMemberBinding="{Binding Id}" />
-                        <GridViewColumn Header="Name"
-                                        Width="350"
-                                        DisplayMemberBinding="{Binding DisplayName}" />
-                        <GridViewColumn Header="Year"
-                                        Width="100"
-                                        DisplayMemberBinding="{Binding Year}" />
-                        <GridViewColumn Header="Modyfied Date"
-                                        Width="150"
-                                        DisplayMemberBinding="{Binding Modyfied}" />
-                        <GridViewColumn Header="Created Date"
-                                        Width="150"
-                                        DisplayMemberBinding="{Binding Created}" />
-                        
-                    </GridView>
-                </ListView.View>
-                <ListView.GroupStyle>
-                    <GroupStyle>
-                        <GroupStyle.HeaderTemplate>
-                            <DataTemplate>
-                                <TextBlock FontWeight="Bold"
-                                           FontSize="14"
-                                           Text="{Binding Year}" />
-                            </DataTemplate>
-                        </GroupStyle.HeaderTemplate>
-                    </GroupStyle>
-                </ListView.GroupStyle>
-            </ListView>
-        </Grid>
+        </Border>
+        <Border Grid.Row="1"
+                Style="{StaticResource ResourceKey=BorderWindowSection}">
+            <Grid Margin="10,0">
+                <StackPanel 
+                            Orientation="Horizontal"
+                            HorizontalAlignment="Left">
+                    <Button Content="New"
+                            Style="{StaticResource ButtonStyle1}"
+                            Click="AddCarButton_Click" />
+                    <Button Content="Edit"
+                            Style="{StaticResource ButtonStyle1}"
+                            Click="EditCarButton_Click" />
+                    <Button Content="Remove"
+                            Style="{StaticResource ButtonStyle1}"
+                            Click="RemoveCarButton_Click" />
+                    <Button Content="Settings"
+                            Style="{StaticResource ButtonStyle1}"
+                            Click="SettingsButton_Click" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal"
+                    HorizontalAlignment="Right" >
+                <Button Content="My Account"
+                        Style="{StaticResource ButtonStyle1}"
+                        HorizontalAlignment="Right"
+                        Click="ButtonMyAccount_Click" />
+                    <Button Content="Logout"
+                        Style="{StaticResource ButtonStyle1}"
+                        HorizontalAlignment="Right"
+                        Click="LogoutButton_Click" />
+                </StackPanel>
+            </Grid>
+        </Border>
+        <Border Grid.Row="2"
+                Style="{StaticResource ResourceKey=BorderWindowSection}">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="auto" />
+                    </Grid.ColumnDefinitions>
+                    <TextBox Text="{Binding SearchedPhase, UpdateSourceTrigger=PropertyChanged}"
+                             Grid.Column="0"
+                             Margin="10"
+                             FontSize="14"
+                             VerticalContentAlignment="Center"
+                             HorizontalContentAlignment="Left"
+                             Padding="10"
+                             KeyUp="SearchedPhase_KeyUp" />
+                    <Button  Grid.Column="1"
+                             Margin="10"
+                             Style="{StaticResource ButtonStyle1}"
+                             Content="Wyszukaj"
+                             Click="SearchButton_Click"
+                             IsDefault="True" />
+                </Grid>
+                <ListView Name="ObjectListView"
+                          MouseDoubleClick="ObjectListView_MouseDoubleClick"
+                          Grid.Row="1"
+                          ItemsSource="{Binding VehiclesList}"
+                          Margin="10">
+                    <ListView.ContextMenu>
+                        <ContextMenu>
+                            <MenuItem Header="Add New"
+                                      Click="AddCarButton_Click" />
+                            <MenuItem Header="Edit"
+                                      Click="EditCarButton_Click" />
+                            <Separator />
+                            <MenuItem Header="Remove"
+                                      Click="RemoveCarButton_Click" />
+                        </ContextMenu>
+                    </ListView.ContextMenu>
+                    <ListView.View>
+                        <GridView>
+                            <GridViewColumn Header="Id"
+                                            Width="45"
+                                            DisplayMemberBinding="{Binding Id}" />
+                            <GridViewColumn Header="Name"
+                                            Width="350"
+                                            DisplayMemberBinding="{Binding DisplayName}" />
+                            <GridViewColumn Header="Year"
+                                            Width="100"
+                                            DisplayMemberBinding="{Binding Year}" />
+                            <GridViewColumn Header="Modyfied Date"
+                                            Width="150"
+                                            DisplayMemberBinding="{Binding Modyfied}" />
+                            <GridViewColumn Header="Created Date"
+                                            Width="150"
+                                            DisplayMemberBinding="{Binding Created}" />
+                            <!--<GridViewColumn Header="View" Width="75">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Button Name="btnView"
+                                            Content="View" />
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>-->
+                        </GridView>
+                    </ListView.View>
+                    <ListView.GroupStyle>
+                        <GroupStyle>
+                            <GroupStyle.HeaderTemplate>
+                                <DataTemplate>
+                                    <TextBlock FontWeight="Bold"
+                                               FontSize="14"
+                                               Text="{Binding Year}" />
+                                </DataTemplate>
+                            </GroupStyle.HeaderTemplate>
+                        </GroupStyle>
+                    </ListView.GroupStyle>
+                </ListView>
+            </Grid>
+        </Border>
+        <Border Grid.Row="3"
+                Style="{StaticResource ResourceKey=BorderWindowSection}">
+            <TextBlock Text="{Binding Message}"
+                       Style="{StaticResource ActionMessageStyle}" />
+        </Border>
     </Grid>
 </Window>

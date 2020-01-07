@@ -2,6 +2,7 @@
 using ManagementSystemForMechanics.Models;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Data.Entity;
 using System.Linq;
 using System.Text;
@@ -18,25 +19,34 @@ using System.Windows.Shapes;
 
 namespace ManagementSystemForMechanics
 {
+
     /// <summary>
     /// Interaction logic for LoginWindow.xaml
     /// </summary>
-    public partial class LoginWindow : Window
+    public partial class LoginWindow : Window, INotifyPropertyChanged
     {
-        private string login;
+        public event PropertyChangedEventHandler PropertyChanged;
 
+        public void NotifyPropertyChanged(string propertyName = "")
+        {
+            if (PropertyChanged != null)
+            {
+                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+            }
+        }
+
+        private string login;
         public string Login
         {
             get { return login; }
             set
             {
                 login = value;
-                txtLogin.Text = login;
+                NotifyPropertyChanged("Login");
             }
         }
 
         private string password;
-
         public string Password
         {
             get { return password; }
@@ -47,60 +57,80 @@ namespace ManagementSystemForMechanics
             }
         }
 
+        private string message;
+        public string Message
+        {
+            get { return message; }
+            set { message = value; NotifyPropertyChanged("Message"); }
+        }
+
+
         public Account Account { get; private set; }
+        private bool loadingIconVisibility;
 
-        public LoginWindow()
+        public bool LoadingIconVisibility
         {
+            get { return loadingIconVisibility; }
+            set { loadingIconVisibility = value; NotifyPropertyChanged("LoadingIconVisibility"); }
+        }
+
+
+        public LoginWindow() : base()
+        {
+            DataContext = this;
             InitializeComponent();
-            LoadingIcon.Visibility = Visibility.Hidden;
+            LoadingIconVisibility = false;
+            Login = "admin";
+            Password = "Pass";
         }
 
-        private async void Button_Click(object sender, RoutedEventArgs e)
+        private void Button_Click(object sender, RoutedEventArgs e)
         {
-            LoadingIcon.Visibility = Visibility.Visible;
+                ShowMessage("Logowanie...");
+                LoadingIconVisibility = true;
 
-            if (!ValidInputData())
-                return;
+                if (!ValidInputData())
+                    return;
 
-            Account account = await GetAccount();
-            if (account == null)
+            Task.Factory.StartNew(() =>
             {
-                ShowMessage("User do not exist. Incorrect login or password.");
-                Password = string.Empty;
-                return;
-            }
-            await LoginAccount(account);
-            MainWindow mainWindow = new MainWindow(account);
-            mainWindow.Show();
+                Account = GetAccount();
+            })
+            .ContinueWith((task) =>
+            {
+                if (Account == null)
+                {
+                    ShowMessage("User do not exist. Incorrect login or password.");
+                    Password = string.Empty;
+                    return;
+                }
 
-            Close();
+                LoginAccount(Account);
+                MainWindow mainWindow = new MainWindow(Account);
+                mainWindow.Show();
+
+                Close();
+            }, System.Threading.CancellationToken.None, TaskContinuationOptions.None, TaskScheduler.FromCurrentSynchronizationContext());
 
         }
-        private async Task LoginAccount(Account account)
+
+        private void LoginAccount(Account account)
         {
             using (DBContext context = new DBContext())
             {
                 context.Accounts.Attach(account).IsLogged = true;
-                await context.SaveChangesAsync();
+                context.SaveChanges();
             }
 
 
         }
-        private async Task<Account> GetAccount()
+        private Account GetAccount()
         {
-
             using (DBContext context = new DBContext())
             {
-                //Account account = 
-                return await context.Accounts
+                return context.Accounts
                     .Where(a => a.Login == Login && a.Password == Password && a.IsActive)
-                    .FirstOrDefaultAsync();
-                //if (account != null)
-                //{
-                //    account.IsLogged = true;
-                //}
-                // context.SaveChanges();
-                //return account;
+                    .FirstOrDefault();
             }
 
         }
@@ -126,9 +156,9 @@ namespace ManagementSystemForMechanics
 
         private void ShowMessage(string hint)
         {
-            txtMessage.Text = hint;
-            if (LoadingIcon.Visibility == Visibility.Visible)
-                LoadingIcon.Visibility = Visibility.Hidden;
+            Message = hint;
+            //if (LoadingIcon.Visibility == Visibility.Visible)
+            LoadingIconVisibility = false;
 
         }
 
