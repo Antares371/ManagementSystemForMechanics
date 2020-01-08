@@ -1,5 +1,7 @@
-﻿using System;
+﻿using ManagementSystemForMechanics.Models;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,15 +13,23 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
-using ManagementSystemForMechanics.Models;
 
 namespace ManagementSystemForMechanics
 {
     /// <summary>
     /// Interaction logic for AccountWindow.xaml
     /// </summary>
-    public partial class AccountWindow : Window
+    public partial class AccountWindow : Window, INotifyPropertyChanged
     {
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        public void NotifyPropertyChanged(string propertyName = "")
+        {
+            if (PropertyChanged != null)
+            {
+                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+            }
+        }
         private Account account;
 
         public AccountWindow()
@@ -28,7 +38,7 @@ namespace ManagementSystemForMechanics
             InitializeComponent();
         }
 
-        public AccountWindow(Account account):this()
+        public AccountWindow(Account account) : this()
         {
             this.account = account;
         }

@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
+using System.ComponentModel;
 using System.Data.Entity;
 using System.Linq;
 using System.Text;
@@ -22,14 +23,23 @@ namespace ManagementSystemForMechanics
     /// <summary>
     /// Interaction logic for VehicleWindow.xaml
     /// </summary>
-    public partial class VehicleWindow : Window
+    public partial class VehicleWindow : Window, INotifyPropertyChanged
     {
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        public void NotifyPropertyChanged(string propertyName = "")
+        {
+            if (PropertyChanged != null)
+            {
+                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+            }
+        }
 
         private DBContext context;
         public List<VehicleMark> VehicleMarks { get; set; }
         public List<VehicleModel> VehicleModels { get; set; }
-
         public List<FuelType> FuelTypes { get; set; }
+
         public Vehicle Vehicle { get; set; }
         public string Message { get; set; }
         public string VehicleMotorCapacity { get; set; }
