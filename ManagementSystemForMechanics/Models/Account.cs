@@ -19,7 +19,7 @@ namespace ManagementSystemForMechanics.Models
         public DateTime Modyfied { get; set; }
 
         public virtual Mechanic User { get; set; }
-        public AccountType Type { get; set; }
+
         public bool IsActive { get; set; }
         public bool IsLogged { get; set; }
 
@@ -48,18 +48,10 @@ namespace ManagementSystemForMechanics.Models
         public PermissionType Type { get; set; }
         public int PermissionSum { get; set; }
     }
+
     public enum PermissionType
     {
-        VehicleAdd = 1,
-        VehicleEdit = 2,
-        VehicleRemove = 3,
+        Vehicle = 1,
         SettingsPanel = 4,
-    }
-
-
-    public enum AccountType
-    {
-        Administrator = 1,
-        User = 2
     }
 }

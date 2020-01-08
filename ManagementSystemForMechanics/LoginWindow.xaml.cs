@@ -35,6 +35,8 @@ namespace ManagementSystemForMechanics
             }
         }
 
+        public Account Account { get; private set; }
+
         private string login;
         public string Login
         {
@@ -42,7 +44,7 @@ namespace ManagementSystemForMechanics
             set
             {
                 login = value;
-                NotifyPropertyChanged("Login");
+                NotifyPropertyChanged(nameof(Login));
             }
         }
 
@@ -61,17 +63,14 @@ namespace ManagementSystemForMechanics
         public string Message
         {
             get { return message; }
-            set { message = value; NotifyPropertyChanged("Message"); }
+            set { message = value; NotifyPropertyChanged(nameof(Message)); }
         }
 
-
-        public Account Account { get; private set; }
         private bool loadingIconVisibility;
-
         public bool LoadingIconVisibility
         {
             get { return loadingIconVisibility; }
-            set { loadingIconVisibility = value; NotifyPropertyChanged("LoadingIconVisibility"); }
+            set { loadingIconVisibility = value; NotifyPropertyChanged(nameof(LoadingIconVisibility)); }
         }
 
 
@@ -124,13 +123,15 @@ namespace ManagementSystemForMechanics
 
 
         }
+        
         private Account GetAccount()
         {
             using (DBContext context = new DBContext())
             {
                 return context.Accounts
+                    .Include(a => a.User)
                     .Where(a => a.Login == Login && a.Password == Password && a.IsActive)
-                    .FirstOrDefault();
+                    .SingleOrDefault();
             }
 
         }
