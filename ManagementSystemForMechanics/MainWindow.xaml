@@ -49,26 +49,26 @@
                 <StackPanel 
                             Orientation="Horizontal"
                             HorizontalAlignment="Left">
-                    <Button Content="New"
+                    <Button Content="Nowy"
                             Style="{StaticResource ButtonStyle1}"
                             Click="AddCarButton_Click" />
-                    <Button Content="Edit"
+                    <Button Content="Edytuj"
                             Style="{StaticResource ButtonStyle1}"
                             Click="EditCarButton_Click" />
-                    <Button Content="Remove"
+                    <Button Content="Usuń"
                             Style="{StaticResource ButtonStyle1}"
                             Click="RemoveCarButton_Click" />
-                    <Button Content="Settings"
+                    <Button Content="Ustawienia"
                             Style="{StaticResource ButtonStyle1}"
                             Click="SettingsButton_Click" />
                 </StackPanel>
                 <StackPanel Orientation="Horizontal"
                     HorizontalAlignment="Right" >
-                <Button Content="My Account"
+                <Button Content="Moje konto"
                         Style="{StaticResource ButtonStyle1}"
                         HorizontalAlignment="Right"
                         Click="ButtonMyAccount_Click" />
-                    <Button Content="Logout"
+                    <Button Content="Wyloguj"
                         Style="{StaticResource ButtonStyle1}"
                         HorizontalAlignment="Right"
                         Click="LogoutButton_Click" />

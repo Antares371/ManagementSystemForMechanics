@@ -18,7 +18,7 @@
         <Border Grid.Row="0"
                 Style="{StaticResource ResourceKey=BorderWindowSection}">
             <Label Name="CarLabel"
-                   Content="Settings"
+                   Content="Ustawienia"
                    FontSize="25"
                    FontStyle="Italic"
                    FontWeight="Bold"

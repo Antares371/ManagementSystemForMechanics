@@ -34,9 +34,9 @@
                         Orientation="Horizontal"
                         HorizontalAlignment="Stretch">
                 <Button Click="ButtonSave_Click"
-                        Style="{StaticResource ButtonStyle1}">Save</Button>
+                        Style="{StaticResource ButtonStyle1}">Zapisz</Button>
                 <Button Click="ButtonCancel_Click"
-                        Style="{StaticResource ButtonStyle1}">Cancel</Button>
+                        Style="{StaticResource ButtonStyle1}">Anuluj</Button>
             </StackPanel>
         </Border>
         <Border Grid.Row="2"
@@ -107,7 +107,7 @@
                                     <ColumnDefinition Width="325" />
                                 </Grid.ColumnDefinitions>
                                 <TextBlock Grid.Row="0"
-                                           Grid.Column="0">Registration Number:</TextBlock>
+                                           Grid.Column="0">Numer rejestracyjny:</TextBlock>
                                 <TextBox Grid.Row="0"
                                          Grid.Column="1"
                                          Text="{Binding VehicleRegistrationNumber}" />
@@ -117,7 +117,7 @@
                                          Grid.Column="1"
                                          Text="{Binding VehicleVIN}" />
                                 <TextBlock Grid.Row="2"
-                                           Grid.Column="0">Mark:</TextBlock>
+                                           Grid.Column="0">Marka:</TextBlock>
                                 <ComboBox Name="comboBoxMarks" Grid.Row="2"
                                           Grid.Column="1"
                                           ItemsSource="{Binding VehicleMarks}"
@@ -131,27 +131,27 @@
                                           SelectedItem="{Binding VehicleModel}"
                                           DisplayMemberPath="Name" />
                                 <TextBlock Grid.Row="4"
-                                           Grid.Column="0">Motor Capacity:</TextBlock>
+                                           Grid.Column="0">Pojemność silnika:</TextBlock>
                                 <TextBox Grid.Row="4"
                                          Grid.Column="1"
                                          Text="{Binding VehicleMotorCapacity}" />
                                 <TextBlock Grid.Row="5"
-                                           Grid.Column="0">Motor Power:</TextBlock>
+                                           Grid.Column="0">Moc silnika:</TextBlock>
                                 <TextBox Grid.Row="5"
                                          Grid.Column="1"
                                          Text="{Binding VehiclePower}" />
                                 <TextBlock Grid.Row="6"
-                                           Grid.Column="0">Version:</TextBlock>
+                                           Grid.Column="0">Wersja:</TextBlock>
                                 <TextBox Grid.Row="6"
                                          Grid.Column="1"
                                          Text="{Binding VehicleVersion}" />
                                 <TextBlock Grid.Row="7"
-                                           Grid.Column="0">Year:</TextBlock>
+                                           Grid.Column="0">Rok produkcji:</TextBlock>
                                 <TextBox Grid.Row="7"
                                          Grid.Column="1"
                                          Text="{Binding VehicleYear}" />
                                 <TextBlock Grid.Row="8"
-                                           Grid.Column="0">Color:</TextBlock>
+                                           Grid.Column="0">Kolor:</TextBlock>
                                 <Rectangle Grid.Row="8"
                                            Grid.Column="1"
                                            Fill="{Binding VehicleColour, Converter={StaticResource ResourceKey=HexToSolidColorBrushConverter}}" />
@@ -159,7 +159,7 @@
                                            Grid.Column="1"
                                            Text="{Binding VehicleColor}" />
                                 <TextBlock Grid.Row="9"
-                                           Grid.Column="0">Fuel Type:</TextBlock>
+                                           Grid.Column="0">Typ paliwa:</TextBlock>
                                 <ComboBox Grid.Row="9"
                                           Grid.Column="1"
                                           ItemsSource="{Binding FuelTypes}"
@@ -168,7 +168,7 @@
                             </Grid>
                         </ScrollViewer>
                     </TabItem>
-                    <TabItem Header="Service">
+                    <TabItem Header="Serwisy">
                         <!--<Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="8*" />
@@ -239,7 +239,7 @@
                                           HorizontalAlignment="Stretch" />
                         </Grid>-->
                     </TabItem>
-                    <TabItem Header="Persons &amp; Comanies">
+                    <TabItem Header="Klienci">
                         <ListView Name="CustomersListView">
                             <ListView.Resources>
                                 <Style TargetType="{x:Type GridViewColumnHeader}">

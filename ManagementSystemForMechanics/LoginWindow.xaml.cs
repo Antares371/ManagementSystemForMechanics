@@ -86,11 +86,11 @@ namespace ManagementSystemForMechanics
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-                ShowMessage("Logowanie...");
-                LoadingIconVisibility = true;
+            ShowMessage("Logowanie...");
+            LoadingIconVisibility = true;
 
-                if (!ValidInputData())
-                    return;
+            if (!ValidInputData())
+                return;
 
             Task.Factory.StartNew(() =>
             {
@@ -100,7 +100,7 @@ namespace ManagementSystemForMechanics
             {
                 if (Account == null)
                 {
-                    ShowMessage("User do not exist. Incorrect login or password.");
+                    ShowMessage("Podany użytkownik nie istnieje. Niepoprawny login lub hasło.");
                     Password = string.Empty;
                     return;
                 }
@@ -141,14 +141,14 @@ namespace ManagementSystemForMechanics
             if (string.IsNullOrEmpty(Login))
             {
 
-                ShowMessage("Login can not be empty.");
+                ShowMessage("Pole login nie może być puste.");
                 Password = string.Empty;
                 return false;
             }
             if (string.IsNullOrEmpty(Password))
             {
 
-                ShowMessage("Password can not be empty.");
+                ShowMessage("Pole hasło nie może być puste.");
                 return false;
             }
             return true;
