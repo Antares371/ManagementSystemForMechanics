@@ -8,6 +8,7 @@ using System.ComponentModel;
 using System.Data.Entity;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -41,34 +42,128 @@ namespace ManagementSystemForMechanics
         public List<FuelType> FuelTypes { get; set; }
 
         public Vehicle Vehicle { get; set; }
-        public string Message { get; set; }
-        public string VehicleMotorCapacity { get; set; }
-        public string VehiclePower { get; set; }
-        public string VehicleVersion { get; set; }
-        public VehicleMark VehicleMark { get; set; }
-        public VehicleModel VehicleModel { get; set; }
-        public FuelType VehicleFuelType { get; set; }
+
+        private string message;
+        public string Message
+        {
+            get { return message; }
+            set { message = value; NotifyPropertyChanged(nameof(Message)); }
+        }
+
+        private string vehicleMotorCapacity;
+        public string VehicleMotorCapacity
+        {
+            get { return vehicleMotorCapacity; }
+            set { vehicleMotorCapacity = value; NotifyPropertyChanged(nameof(VehicleMotorCapacity)); }
+        }
+
+        private string vehiclePower;
+        public string VehiclePower
+        {
+            get { return vehiclePower; }
+            set { vehiclePower = value; NotifyPropertyChanged(nameof(VehiclePower)); }
+        }
+
+        private string vehicleVersion;
+        public string VehicleVersion
+        {
+            get { return vehicleVersion; }
+            set { vehicleVersion = value; NotifyPropertyChanged(nameof(VehicleVersion)); }
+        }
+
+        private VehicleMark vehicleMark;
+        public VehicleMark VehicleMark
+        {
+            get { return vehicleMark; }
+            set { vehicleMark = value; NotifyPropertyChanged(nameof(VehicleMark)); }
+        }
+
+        private VehicleModel vehicleModel;
+        public VehicleModel VehicleModel
+        {
+            get { return vehicleModel; }
+            set { vehicleModel = value; NotifyPropertyChanged(nameof(VehicleModel)); }
+        }
+
+        private FuelType vehicleFuelType;
+        public FuelType VehicleFuelType
+        {
+            get { return vehicleFuelType; }
+            set
+            {
+                vehicleFuelType = value;
+                NotifyPropertyChanged(nameof(vehicleFuelType));
+            }
+        }
+
         public ObservableCollection<VehicleService> VehicleServicesList { get; } = new ObservableCollection<VehicleService>();
-        public string VehicleYear { get; set; }
-        public string VehicleVIN { get; set; }
-        public string VehicleRegistrationNumber { get; set; }
-        public string VehicleColor { get; set; }
+
+        private string vehicleYear;
+        public string VehicleYear
+        {
+            get { return vehicleYear; }
+            set { vehicleYear = value; NotifyPropertyChanged(nameof(VehicleYear)); }
+        }
+
+        private string vehicleVIN;
+        public string VehicleVIN
+        {
+            get { return vehicleVIN; }
+            set { vehicleVIN = value; NotifyPropertyChanged(nameof(VehicleVIN)); }
+        }
+
+
+        private string vehicleRegistrationNumber;
+        public string VehicleRegistrationNumber
+        {
+            get { return vehicleRegistrationNumber; }
+            set { vehicleRegistrationNumber = value; NotifyPropertyChanged(nameof(VehicleRegistrationNumber)); }
+        }
+
+        private string vehicleColor;
+        public string VehicleColor
+        {
+            get { return vehicleColor; }
+            set { vehicleColor = value; NotifyPropertyChanged(nameof(VehicleColor)); }
+        }
+
+
+        private bool loadingMessageVisibility;
+        public bool LoadingMessageVisibility
+        {
+            get { return loadingMessageVisibility; }
+            set
+            {
+                loadingMessageVisibility = value;
+                NotifyPropertyChanged(nameof(LoadingMessageVisibility));
+            }
+        }
+
+        private string loadingMessage;
+        public string LoadingMessage
+        {
+            get { return loadingMessage; }
+            set { loadingMessage = value; NotifyPropertyChanged(nameof(LoadingMessage)); }
+        }
 
         public event EventHandler VehicleUpdated;
 
-
         public VehicleWindow()
         {
+            LoadingMessage = "Proszę czekać...";
+            LoadingMessageVisibility = true;
             context = new DBContext();
             InitializeComponent();
             DataContext = this;
             InitializeListComponent();
             Closing += VehicleWindow_Closing;
         }
+
         public VehicleWindow(Vehicle vehicle) : this()
         {
             InitializeVehicle(vehicle);
             InitializeVehicleComponents();
+            LoadingMessageVisibility = false;
         }
 
         private void InitializeListComponent()
@@ -89,7 +184,6 @@ namespace ManagementSystemForMechanics
             VehicleUpdated(this, e);
         }
 
-
         private void InitializeVehicleComponents()
         {
             VehicleColor = Vehicle.Color;
@@ -103,11 +197,9 @@ namespace ManagementSystemForMechanics
             VehicleVIN = Vehicle.VIN;
             VehicleYear = Vehicle.Year.ToString();
             InitailizeVehicleServices();
-            Message = $"Last modification: {Vehicle.GetLastModificationDate(Vehicle)}";
+            Message = $"Ostatnia modyfikacja: {Vehicle.GetLastModificationDate(Vehicle)}";
 
         }
-
-
 
         private void InitailizeVehicleServices()
         {
@@ -151,14 +243,29 @@ namespace ManagementSystemForMechanics
 
         private void ButtonSave_Click(object sender, RoutedEventArgs e)
         {
-            if (Vehicle == null)
+            Task.Factory.StartNew(() =>
             {
-                Vehicle = new Vehicle();
-                context.Vehicles.Add(Vehicle);
-            }
-            ApplayVehicleChanges();
-            context.SaveChanges();
-            OnVehicleUpdated(EventArgs.Empty);
+                LoadingMessageVisibility = true;
+                Message = $"Zapisywanie zmian...";
+                Task.Delay(2500);
+            })
+            .ContinueWith((task) =>
+            {
+                if (Vehicle == null)
+                {
+                    Vehicle = new Vehicle();
+                    context.Vehicles.Add(Vehicle);
+                }
+                ApplayVehicleChanges();
+                context.SaveChanges();
+            })
+            .ContinueWith((task) =>
+            {
+                OnVehicleUpdated(EventArgs.Empty);
+                LoadingMessageVisibility = false;
+                Message = $"Zmiany zostały zapisane.{Vehicle.GetLastModificationDate(Vehicle)}";
+            }, System.Threading.CancellationToken.None, TaskContinuationOptions.None, TaskScheduler.FromCurrentSynchronizationContext());
+
         }
 
         private void ApplayVehicleChanges()

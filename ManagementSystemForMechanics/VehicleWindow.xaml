@@ -5,11 +5,13 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ManagementSystemForMechanics"
         xmlns:converters="clr-namespace:ManagementSystemForMechanics.Converters"
+        xmlns:gif="http://wpfanimatedgif.codeplex.com"
         mc:Ignorable="d"
         Title="VehicleWindow"
         Height="450"
         Width="800">
     <Window.Resources>
+        <converters:BoolToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
         <converters:HexToSolidColorBrushConverter x:Key="HexToSolidColorBrushConverter" />
     </Window.Resources>
     <Grid>
@@ -42,6 +44,26 @@
         <Border Grid.Row="2"
                 Style="{StaticResource ResourceKey=BorderWindowSection}">
             <Grid Margin="10">
+                <Grid Panel.ZIndex="1"
+                      Background="WhiteSmoke"
+                      Opacity="0.5"
+                      Width="250"
+                      Height="250"
+                      Visibility="{Binding LoadingMessageVisibility, Converter={StaticResource ResourceKey=BooleanToVisibilityConverter}}">
+                    <StackPanel MinHeight="80" Margin="20">
+                        <Image VerticalAlignment="Top"
+                               Height="48"
+                               gif:ImageBehavior.AnimatedSource="Resources/loading1_48.gif"
+                               HorizontalAlignment="Center" />
+                        <TextBlock Text="{Binding LoadingMessage}"
+                                   HorizontalAlignment="Stretch"
+                                   VerticalAlignment="Bottom"
+                                   TextAlignment="Center"
+                                   TextWrapping="WrapWithOverflow"
+                                   Margin="20,0"
+                                   MinHeight="32" />
+                    </StackPanel>
+                </Grid>
                 <TabControl>
                     <TabItem Header="Info">
                         <ScrollViewer VerticalScrollBarVisibility="Auto">
@@ -118,10 +140,12 @@
                                          Text="{Binding VehicleVIN}" />
                                 <TextBlock Grid.Row="2"
                                            Grid.Column="0">Marka:</TextBlock>
-                                <ComboBox Name="comboBoxMarks" Grid.Row="2"
+                                <ComboBox Name="comboBoxMarks"
+                                          Grid.Row="2"
                                           Grid.Column="1"
                                           ItemsSource="{Binding VehicleMarks}"
-                                          SelectedItem="{Binding VehicleMark, UpdateSourceTrigger=PropertyChanged}"   SelectionChanged="ComboBoxMarks_SelectionChanged"
+                                          SelectedItem="{Binding VehicleMark, UpdateSourceTrigger=PropertyChanged}"
+                                          SelectionChanged="ComboBoxMarks_SelectionChanged"
                                           DisplayMemberPath="Name" />
                                 <TextBlock Grid.Row="3"
                                            Grid.Column="0">Model:</TextBlock>
