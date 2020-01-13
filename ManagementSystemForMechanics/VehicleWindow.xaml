@@ -50,7 +50,8 @@
                       Width="250"
                       Height="250"
                       Visibility="{Binding LoadingMessageVisibility, Converter={StaticResource ResourceKey=BooleanToVisibilityConverter}}">
-                    <StackPanel MinHeight="80" Margin="20">
+                    <StackPanel MinHeight="80"
+                                Margin="20">
                         <Image VerticalAlignment="Top"
                                Height="48"
                                gif:ImageBehavior.AnimatedSource="Resources/loading1_48.gif"
@@ -199,11 +200,20 @@
                                 <ColumnDefinition Width="3" />
                                 <ColumnDefinition Width="2*" />
                             </Grid.ColumnDefinitions>-->
-                        <DataGrid  Name="dataGridVehiclesMarks"
-                                   ItemsSource="{Binding VehicleServicesList}"
+                        <DataGrid  ItemsSource="{Binding VehicleServicesList}"
                                    AutoGenerateColumns="False"
                                    RowDetailsVisibilityMode="VisibleWhenSelected"
                                    AreRowDetailsFrozen="False">
+                            <DataGrid.ContextMenu>
+                                <ContextMenu>
+                                    <MenuItem Header="New"
+                                              Click="MenuItemNewService_Click" />
+                                    <MenuItem Header="Edit"
+                                              Click="MenuItemEditService_Click" />
+                                    <MenuItem Header="Remove"
+                                              Click="MenuItemRemoveService_Click" /> Click="NewServiceMenuItem_Click" />
+                                </ContextMenu>
+                            </DataGrid.ContextMenu>
                             <DataGrid.Columns>
                                 <DataGridTextColumn Header="Id"
                                                     Binding="{Binding Id}"
@@ -259,9 +269,6 @@
                                 </DataTemplate>
                             </DataGrid.RowDetailsTemplate>
                         </DataGrid>
-                        <!--<GridSplitter Grid.Column="1"
-                                          HorizontalAlignment="Stretch" />
-                        </Grid>-->
                     </TabItem>
                     <TabItem Header="Klienci">
                         <ListView Name="CustomersListView">

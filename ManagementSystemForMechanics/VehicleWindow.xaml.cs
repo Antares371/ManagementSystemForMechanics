@@ -289,6 +289,8 @@ namespace ManagementSystemForMechanics
         private void ButtonCancel_Click(object sender, RoutedEventArgs e)
         {
             context.RollBack();
+            if (Vehicle == null)
+                return;
             InitializeVehicle(Vehicle);
             InitializeVehicleComponents();
         }
@@ -299,6 +301,30 @@ namespace ManagementSystemForMechanics
             //VehicleModels = mark.Models;
             //VehicleModel = null;
 
+        }
+
+        private void MenuItemRemoveService_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void MenuItemEditService_Click(object sender, RoutedEventArgs e)
+        {
+            VehicleService service = new VehicleService() { Id = 21};
+            ServiceWindow serviceWindow = new ServiceWindow(service)
+            {
+                Owner = this
+            };
+            serviceWindow.ShowDialog();
+        }
+
+        private void MenuItemNewService_Click(object sender, RoutedEventArgs e)
+        {
+            ServiceWindow serviceWindow = new ServiceWindow
+            {
+                Owner = this
+            };
+            serviceWindow.ShowDialog();
         }
     }
 }

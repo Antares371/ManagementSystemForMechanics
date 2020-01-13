@@ -128,12 +128,12 @@ namespace ManagementSystemForMechanics
                 ApplayChanges();
                 context.SaveChanges();
             }
-            MessageBox.Show("Hasło zostało zmienione.", "", MessageBoxButton.OK);
+            MessageBox.Show("Dane zapisano pomyślnie.", "", MessageBoxButton.OK);
         }
 
         private bool ValidInputData()
         {
-            if (string.IsNullOrEmpty(Name) || string.IsNullOrEmpty(Surname) || string.IsNullOrEmpty(PhoneNumber) || string.IsNullOrEmpty(Email))
+            if (string.IsNullOrEmpty(UserName) || string.IsNullOrEmpty(Surname) || string.IsNullOrEmpty(PhoneNumber) || string.IsNullOrEmpty(Email))
                 return false;
             return true;
         }
@@ -145,7 +145,7 @@ namespace ManagementSystemForMechanics
 
         private void ApplayChanges()
         {
-            account.User.Name = Name;
+            account.User.Name = UserName;
             account.User.Surname = Surname;
             account.User.PhoneNumber = PhoneNumber;
             account.User.Email = Email;
